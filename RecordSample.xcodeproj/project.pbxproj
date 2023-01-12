@@ -11,6 +11,7 @@
 		5248C328295F158900CDBC97 /* AudioRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5248C327295F158900CDBC97 /* AudioRecorderService.swift */; };
 		5250B68D296FFC88003CBAF7 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5250B68C296FFC88003CBAF7 /* Extensions.swift */; };
 		5250B68F296FFEC0003CBAF7 /* MessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5250B68E296FFEC0003CBAF7 /* MessagesService.swift */; };
+		5250B6922970194D003CBAF7 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = 5250B6912970194D003CBAF7 /* PopupView */; };
 		52C6931B295C39E900A711C1 /* RecordSampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C6931A295C39E900A711C1 /* RecordSampleApp.swift */; };
 		52C6931D295C39E900A711C1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C6931C295C39E900A711C1 /* ContentView.swift */; };
 		52C6931F295C39EB00A711C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52C6931E295C39EB00A711C1 /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5250B6922970194D003CBAF7 /* PopupView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +142,7 @@
 			);
 			name = RecordSample;
 			packageProductDependencies = (
+				5250B6912970194D003CBAF7 /* PopupView */,
 			);
 			productName = RecordSample;
 			productReference = 52C69317295C39E900A711C1 /* RecordSample.app */;
@@ -170,6 +173,7 @@
 			);
 			mainGroup = 52C6930E295C39E800A711C1;
 			packageReferences = (
+				5250B6902970194D003CBAF7 /* XCRemoteSwiftPackageReference "PopupView" */,
 			);
 			productRefGroup = 52C69318295C39E900A711C1 /* Products */;
 			projectDirPath = "";
@@ -409,6 +413,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5250B6902970194D003CBAF7 /* XCRemoteSwiftPackageReference "PopupView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/PopupView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5250B6912970194D003CBAF7 /* PopupView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5250B6902970194D003CBAF7 /* XCRemoteSwiftPackageReference "PopupView" */;
+			productName = PopupView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 52C6930F295C39E800A711C1 /* Project object */;
 }

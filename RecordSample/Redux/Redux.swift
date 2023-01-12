@@ -49,6 +49,7 @@ enum AppAction {
     case startRecordSession
     case endRecordSession
     case cancelRecordSession
+    case errorDismiss
     
     case nop
 }
@@ -81,6 +82,8 @@ func appReducer(state: inout AppState, action: AppAction) -> Void {
         if case let .startRecord(id) = state.recordAudioState {
             state.recordAudioState = .recordingCancel(id)
         }
+    case .errorDismiss:
+        state.recordAudioState = .pending
     case .nop:
         break
     }

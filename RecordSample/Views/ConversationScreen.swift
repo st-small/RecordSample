@@ -5,7 +5,17 @@
 //  Created by Stanly Shiyanovskiy on 28.12.2022.
 //
 
+import PopupView
 import SwiftUI
+
+struct ErrorMessage {
+    var error: String
+    
+    var isNotEmpty: Bool {
+        get { !error.isEmpty }
+        set { error = "" }
+    }
+}
 
 enum ConversationPanelState {
     case main, recordAudio
@@ -13,7 +23,7 @@ enum ConversationPanelState {
 
 struct ConversationScreenConnector: Connector {
     func map(store: Store<AppState, AppAction>) -> some View {
-        var error = ""
+        var errorMessage = ErrorMessage(error: "")
         var isRecording = false
         
         switch store.state.recordAudioState {
@@ -21,8 +31,8 @@ struct ConversationScreenConnector: Connector {
             break
         case .startRecord:
             isRecording = true
-        case .error(let errorMessage):
-            error = errorMessage
+        case .error(let errorText):
+            errorMessage.error = errorText
         }
 
         return ConversationScreen(
@@ -30,11 +40,14 @@ struct ConversationScreenConnector: Connector {
                 get: { "" },
                 set: { _ in }
             ),
+            errorMessage: Binding(
+                get: { errorMessage },
+                set: { _ in store.dispatch(.errorDismiss) }
+            ),
             showRecordPanel: isRecording,
             showAttachmentButton: !isRecording,
             showTextField: !isRecording,
             showEmojiIcon: !isRecording,
-            errorMessage: error,
             onOpenRecordAudioPanel: {
                 store.dispatch(.startRecordSession)
             },
@@ -52,12 +65,12 @@ struct ConversationScreen: View {
     
     // MARK: - Props
     @Binding var textFieldValue: String
+    @Binding var errorMessage: ErrorMessage
     
     var showRecordPanel: Bool
     var showAttachmentButton: Bool = false
     var showTextField: Bool = false
     var showEmojiIcon: Bool = false
-    var errorMessage: String
     
     @State private var timerLabel = "00:00"
     @State private var timerCounter = 0
@@ -93,15 +106,24 @@ struct ConversationScreen: View {
     
     var messagesContainer: some View {
         ScrollView {
-            if !errorMessage.isEmpty {
-                VStack {
-                    Spacer()
-                    Text(errorMessage)
-                        .font(.title).bold()
-                        .foregroundColor(.red)
-                        .padding()
+            // Messages list here ...
+        }
+        .popup(isPresented: $errorMessage.isNotEmpty) {
+            Text(errorMessage.error)
+                .frame(width: 150, height: 50)
+                .foregroundColor(.red)
+                .background(Color.black.opacity(0.1))
+                .cornerRadius(25)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 25)
+                        .stroke(.black, lineWidth: 1)
                 }
-            }
+        } customize: {
+            $0
+                .type(.floater())
+                .position(.top)
+                .animation(.spring())
+                .closeOnTapOutside(true)
         }
     }
     
@@ -207,10 +229,10 @@ struct ConversationScreen_Previews: PreviewProvider {
     static var previews: some View {
         ConversationScreen(
             textFieldValue: .constant(""),
+            errorMessage: .constant(ErrorMessage(error: "")),
             showRecordPanel: true,
             showAttachmentButton: false,
             showTextField: false,
-            errorMessage: "",
             onOpenRecordAudioPanel: { },
             onCancelRecordAudio: { },
             onCloseRecordAudioPanel: { }
